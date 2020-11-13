@@ -14,6 +14,17 @@ client = discord.Client()
 
 dictionary = PyDictionary()
 
+def create_embed(word, definition):
+    to_return = discord.Embed(title = word)
+
+    for word_type in definition:
+        # print(word_type)
+        for given_def in definition[word_type]:
+            # print(given_def)
+            to_return.add_field(name = word_type, value = given_def, inline = False)
+
+    return to_return
+
 @client.event
 async def on_ready():
     print(f'{client.user.name} has connected to Discord!')
@@ -37,7 +48,8 @@ async def on_message(message):
         print(type(definition))
 
         if (definition):
-            await message.channel.send(definition)
+            # await message.channel.send(definition)
+            await message.channel.send(embed = create_embed(word, definition))
         else:
             await message.channel.send(
                 f'{word}: definition not found'
